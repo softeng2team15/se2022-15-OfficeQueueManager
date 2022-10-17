@@ -7,6 +7,9 @@ function ServicesList(props) {
 
   const [service, setService] = useState("");
 
+  const displayedServices = [];  
+  props.servList.forEach(s => displayedServices.push(s));
+
   return (
     <Container>
       <Row>
@@ -25,49 +28,19 @@ function ServicesList(props) {
         </Col>
       </Row>
       <Stack gap={3}>
-      <Row>
-        <Col>
-        <OverlayTrigger trigger="click" rootClose placement="right" 
-        overlay={<Popover id="popover-basic">{<PopElement service={service}></PopElement>}</Popover>}>
-            <Button variant="warning" size="lg" onClick={() => {setService("first")}}>Service 1</Button>
-        </OverlayTrigger>
-        </Col>
-        <Col>
-        <OverlayTrigger trigger="click" rootClose placement="right" 
-        overlay={<Popover id="popover-basic">{<PopElement service={service}></PopElement>}</Popover>}>
-            <Button variant="warning" size="lg" onClick={() => {setService("second")}}>Service 2</Button>
-        </OverlayTrigger>
-        </Col>
-        <Col>
-        <OverlayTrigger trigger="click" rootClose placement="right" 
-        overlay={<Popover id="popover-basic">{<PopElement service={service}></PopElement>}</Popover>}>
-            <Button variant="warning" size="lg" onClick={() => {setService("third")}}>Service 3</Button>
-        </OverlayTrigger>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-        <OverlayTrigger trigger="click" rootClose placement="right" 
-        overlay={<Popover id="popover-basic">{<PopElement service={service}></PopElement>}</Popover>}>
-            <Button variant="warning" size="lg" onClick={() => {setService("fourth")}}>Service 4</Button>
-        </OverlayTrigger>
-        </Col>
-        <Col>
-        <OverlayTrigger trigger="click" rootClose placement="right" 
-        overlay={<Popover id="popover-basic">{<PopElement service={service}></PopElement>}</Popover>}>
-            <Button variant="warning" size="lg" onClick={() => {setService("fifth")}}>Service 5</Button>
-        </OverlayTrigger>
-        </Col>
-        <Col>
-        <OverlayTrigger trigger="click" rootClose placement="right" 
-        overlay={<Popover id="popover-basic">{<PopElement service={service}></PopElement>}</Popover>}>
-            <Button variant="warning" size="lg" onClick={() => {setService("sixth")}}>Service 6</Button>
-        </OverlayTrigger>
-        </Col>
-      </Row>
+        {displayedServices.map((servList) => <ServiceButton servList={servList} ></ServiceButton>)}
       </Stack>  
     </Container>
   );
+}
+
+function ServiceButton(props){
+    <Col xs={4}>
+        <OverlayTrigger trigger="click" rootClose placement="right" 
+        overlay={<Popover id="popover-basic">{<PopElement service={service}></PopElement>}</Popover>}>
+            <Button variant="warning" size="lg" onClick={() => {setService(props.servList.ServiceID)}}>props.servList.ServiceName</Button>
+        </OverlayTrigger>
+    </Col>
 }
 
 function PopElement(props){
@@ -96,5 +69,7 @@ function PopElement(props){
     </>
   );
 }
+
+
 
 export { ServicesList };
