@@ -1,14 +1,17 @@
+import { Container, Row, Col } from 'react-bootstrap';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { WaitingTime } from "./pages/";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          yoyoyo.
-        </p>
-      </header>
-    </div>
+    <Container fluid>
+      <Row>
+        <Col>
+          <WaitingTime/>
+        </Col>
+      </Row>
+    </Container>
   );
 }
 
