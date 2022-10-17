@@ -1,5 +1,6 @@
 'use strict';
 const express=require('express');
+const dao=require('./dao/dao');
 const app=express();
 const port=3001;
 /* AUTHENTICATION CONTROL
