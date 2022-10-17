@@ -8,7 +8,10 @@ import { useState } from 'react';
 
 function App() {
 
-  const [servList, setServList] = useState([]);
+  const vett = [{ServiceID: 1, ServiceName: "prova"}, {ServiceID: 2, ServiceName: "prova2"}, {ServiceID: 3, ServiceName: "prova3"},
+  {ServiceID: 4, ServiceName: "prova4"}, {ServiceID: 4, ServiceName: "prova4"}];
+
+  const [servList, setServList] = useState(vett);
 
   return (
     <>

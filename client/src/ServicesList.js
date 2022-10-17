@@ -5,8 +5,6 @@ import { useNavigate } from 'react-router-dom';
 
 function ServicesList(props) {
 
-  const [service, setService] = useState();
-
   const displayedServices = [];  
   props.servList.forEach(s => displayedServices.push(s));
 
@@ -27,20 +25,23 @@ function ServicesList(props) {
         </Alert>
         </Col>
       </Row>
-      <Stack gap={3}>
-        {displayedServices.map((servList) => <ServiceButton servList={servList} service={service} setService={setService} ></ServiceButton>)}
-      </Stack>  
+      <Row>  
+        {displayedServices.map((service) => <ServiceButton service={service} ></ServiceButton>)}
+      </Row>    
     </Container>
   );
 }
 
 function ServiceButton(props){
+  return(
+    <>
     <Col xs={4}>
         <OverlayTrigger trigger="click" rootClose placement="right" 
         overlay={<Popover id="popover-basic">{<PopElement service={props.service}></PopElement>}</Popover>}>
-            <Button variant="warning" size="lg" onClick={() => {props.setService(props.servList.ServiceID)}}>props.servList.ServiceName</Button>
+            <Button className='mt-4' variant="warning" size="lg">{props.service.ServiceName}</Button>
         </OverlayTrigger>
     </Col>
+    </>);
 }
 
 function PopElement(props){
@@ -59,7 +60,7 @@ function PopElement(props){
     <>
       <Popover.Header as="h3">Are you sure?</Popover.Header>
       <Popover.Body>
-        Click on <strong>confirm</strong> if you are sure to select the {props.service} service. 
+        Click on <strong>confirm</strong> if you are sure to select the {props.service.ServiceID} service. 
         <br></br>
         <br></br>
         <Form onSubmit={(handleSubmit)}>
