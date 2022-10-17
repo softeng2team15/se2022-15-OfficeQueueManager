@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 function ServicesList(props) {
 
-  const [service, setService] = useState("");
+  const [service, setService] = useState();
 
   const displayedServices = [];  
   props.servList.forEach(s => displayedServices.push(s));
@@ -28,7 +28,7 @@ function ServicesList(props) {
         </Col>
       </Row>
       <Stack gap={3}>
-        {displayedServices.map((servList) => <ServiceButton servList={servList} ></ServiceButton>)}
+        {displayedServices.map((servList) => <ServiceButton servList={servList} service={service} setService={setService} ></ServiceButton>)}
       </Stack>  
     </Container>
   );
@@ -37,8 +37,8 @@ function ServicesList(props) {
 function ServiceButton(props){
     <Col xs={4}>
         <OverlayTrigger trigger="click" rootClose placement="right" 
-        overlay={<Popover id="popover-basic">{<PopElement service={service}></PopElement>}</Popover>}>
-            <Button variant="warning" size="lg" onClick={() => {setService(props.servList.ServiceID)}}>props.servList.ServiceName</Button>
+        overlay={<Popover id="popover-basic">{<PopElement service={props.service}></PopElement>}</Popover>}>
+            <Button variant="warning" size="lg" onClick={() => {props.setService(props.servList.ServiceID)}}>props.servList.ServiceName</Button>
         </OverlayTrigger>
     </Col>
 }
