@@ -65,10 +65,12 @@ app.post('/api/login', passport.authenticate('local'), (req,res) => {
 });
 */
 
-const ticketDAO = require("./dao/ticketDAO");
-
+const ticketsDAO = require("./dao/tickets-dao");
+const servicesDAO = require("./dao/services-dao");
+//GET /api/:serviceID/queueLength
+//{ "length": {{queueLength of service with id}} }
 app.get("/api/:serviceID/queueLength", async (req, res) => {
-	return await ticketDAO.getQueueLength(req.params.serviceID).then(
+	return await ticketsDAO.getQueueLength(req.params.serviceID).then(
 		data => {
 			return res.status(200).json({ length: data });
 		},
@@ -78,8 +80,10 @@ app.get("/api/:serviceID/queueLength", async (req, res) => {
 	);
 });
 
+//GET /api/:serviceID/serviceTime
+//{ "expectedTime": {{expected service time of service with id}} }
 app.get("/api/:serviceID/serviceTime", async (req, res) => {
-	return await ticketDAO.getServiceTime(req.params.serviceID).then(
+	return await servicesDAO.getServiceTime(req.params.serviceID).then(
 		data => {
 			return res.status(200).json(data);
 		},
