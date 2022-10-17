@@ -1,8 +1,16 @@
 'use strict';
 const express=require('express');
-const dao=require('./dao/dao');
+const customer=require('./services/customer');
 const app=express();
 const port=3001;
+app.get('/api/customer/waitingTime/:ticketId',async(req,res)=>{
+    try {
+        const ret=await customer.getWaitingTime(parseInt(req.params.ticketId));
+        return res.status(200).json(ret);
+    } catch (error) {
+        return res.status(error.status).json(error.message);
+    }
+});
 /* AUTHENTICATION CONTROL
 const passport = require('passport');
 const LocalStrategy = require('passport-local'); 
