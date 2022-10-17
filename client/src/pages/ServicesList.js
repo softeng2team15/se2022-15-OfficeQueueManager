@@ -60,7 +60,7 @@ function PopElement(props){
     <>
       <Popover.Header as="h3">Are you sure?</Popover.Header>
       <Popover.Body>
-        Click on <strong>confirm</strong> if you are sure to select the {props.service.ServiceID} service. 
+        Click on <strong>confirm</strong> if you are sure to select that service: {props.service.ServiceName}. 
         <br></br>
         <br></br>
         <Form onSubmit={(handleSubmit)}>
