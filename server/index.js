@@ -64,4 +64,31 @@ app.post('/api/login', passport.authenticate('local'), (req,res) => {
     res.json(req.user.username);
 });
 */
-app.listen(port, () => console.log(`Server started at http://localhost:${port}.`));
+
+const ticketDAO = require("./dao/ticketDAO");
+
+app.get("/api/:serviceID/queueLength", async (req, res) => {
+	return await ticketDAO.getQueueLength(req.params.serviceID).then(
+		data => {
+			return res.status(200).json({ length: data });
+		},
+		err => {
+			return res.status(500).send(err);
+		}
+	);
+});
+
+app.get("/api/:serviceID/serviceTime", async (req, res) => {
+	return await ticketDAO.getServiceTime(req.params.serviceID).then(
+		data => {
+			return res.status(200).json(data);
+		},
+		err => {
+			return res.status(500).send(err);
+		}
+	);
+});
+
+app.listen(port, () =>
+	console.log(`Server started at http://localhost:${port}.`)
+);
