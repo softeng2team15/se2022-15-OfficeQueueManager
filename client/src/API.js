@@ -2,14 +2,13 @@ const APIURL = new URL('http://localhost:3001/api/');
 
 async function newTicket(serviceID){
     return new Promise((resolve, reject) => {
-        fetch(new URL("ticket/new", APIURL), {
-            method: 'POST',
-            body: JSON.stringify(serviceID)})
+        const thisURL = "ticket/new/" + serviceID;
+        fetch(new URL(thisURL, APIURL), {
+            method: 'POST'})
             .then((response) => {
                 if (response.ok) {
                     resolve();
                 } else {
-                    console.log("RESPONSE" + response);
                     response.json()
                         .then((message) => {reject(message);})
                         .catch(() => {reject({error: "Cannot parse server response. "})});
@@ -21,9 +20,9 @@ async function newTicket(serviceID){
 
 async function updateCounterToTicket(ticketID, counterID){
     return new Promise((resolve, reject) => {
-        fetch(new URL("ticket/counter", APIURL), {
-            method: 'PUT',
-            body: JSON.stringify(ticketID, counterID)})
+        const thisURL = "ticket/counter/"+ticketID+"/"+counterID;
+        fetch(new URL(thisURL, APIURL), {
+            method: 'PUT'})
             .then((response) => {
                 if (response.ok) {
                     resolve();
@@ -37,11 +36,11 @@ async function updateCounterToTicket(ticketID, counterID){
     });
 }
 
-async function setDoneToTicket(ticketID, counterID){
+async function setDoneToTicket(ticketID){
     return new Promise((resolve, reject) => {
-        fetch(new URL("ticket/done", APIURL), {
-            method: 'PUT',
-            body: JSON.stringify(ticketID)})
+        const thisURL = "ticket/done/" + ticketID; 
+        fetch(new URL(thisURL, APIURL), {
+            method: 'PUT'})
             .then((response) => {
                 if (response.ok) {
                     resolve();
@@ -55,7 +54,7 @@ async function setDoneToTicket(ticketID, counterID){
     });
 }
 
-async function getServiceList(ticketID, counterID){
+async function getServiceList(){
     return new Promise((resolve, reject) => {
         fetch(new URL("ticket/services", APIURL))
             .then((response) => {
