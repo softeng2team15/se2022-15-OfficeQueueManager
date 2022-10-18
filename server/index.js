@@ -2,6 +2,8 @@
 const express=require('express');
 const app=express();
 const port=3001;
+const dao = require('./dao/dao');
+
 /* AUTHENTICATION CONTROL
 const passport = require('passport');
 const LocalStrategy = require('passport-local'); 
@@ -56,3 +58,46 @@ app.post('/api/login', passport.authenticate('local'), (req,res) => {
 });
 */
 app.listen(port, () => console.log(`Server started at http://localhost:${port}.`));
+
+app.get('/api/services', async (req, res) => {
+    dao.getServiceList()
+      .then(services => {res.json(services)})
+      .catch(() => res.status(500).end());
+  
+  });
+  
+  app.post('/api/ticket/new', async (req, res) => {
+    
+      dao.newTicket(req.body.serviceID)
+      .then(ticketID => {res.json(ticketID); console.log("INDEX:" + res.json(ticketID))})
+      .catch(() => res.status(500).end());
+  });
+  
+  app.put('/api/ticket/counter', async (req, res) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+          return res.status(422).json({ errors: errors.array() });
+      }
+  
+      try {
+          await dao.updateCounterToTicket(req.body.ticketID, req.body.counterID);
+          res.status(204).end();
+      } catch (err) {
+          res.status(503).json({ error: `Database error during the insertion of study plan.` });
+      }
+  });
+  
+  app.put('/api/ticket/done', async (req, res) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+          return res.status(422).json({ errors: errors.array() });
+      }
+  
+      try {
+          await dao.setDoneToTicket(req.body.ticketID);
+          res.status(204).end();
+      } catch (err) {
+          res.status(503).json({ error: `Database error during the insertion of study plan.` });
+      }
+  
+  });
