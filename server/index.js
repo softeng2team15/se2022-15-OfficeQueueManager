@@ -1,16 +1,13 @@
-'use strict';
-const express=require('express');
-const customer=require('./services/customer');
-const app=express();
-const port=3001;
-app.get('/api/customer/waitingTime/:ticketId',async(req,res)=>{
-    try {
-        const ret=await customer.getWaitingTime(parseInt(req.params.ticketId));
-        return res.status(200).json(ret);
-    } catch (error) {
-        return res.status(error.status).json(error.message);
-    }
-});
+"use strict";
+const express = require("express");
+
+const customer = require("./services/customer");
+const ticketsDAO = require("./dao/tickets");
+const servicesDAO = require("./dao/services");
+
+const app = express();
+const port = 3001;
+
 /* AUTHENTICATION CONTROL
 const passport = require('passport');
 const LocalStrategy = require('passport-local'); 
@@ -65,14 +62,22 @@ app.post('/api/login', passport.authenticate('local'), (req,res) => {
 });
 */
 
-const ticketsDAO = require("./dao/tickets-dao");
-const servicesDAO = require("./dao/services-dao");
-//GET /api/:serviceID/queueLength
+app.get("/api/customer/waitingTime/:ticketId", async (req, res) => {
+	try {
+		const ret = await customer.getWaitingTime(
+			parseInt(req.params.ticketId)
+		);
+		return res.status(200).json(ret);
+	} catch (error) {
+		return res.status(error.status).json(error.message);
+	}
+});
+
 //{ "length": {{queueLength of service with id}} }
-app.get("/api/:serviceID/queueLength", async (req, res) => {
-	return await ticketsDAO.getQueueLength(req.params.serviceID).then(
+app.get("/api/tickets/:serviceID/queueLength", async (req, res) => {
+	return await ticketsDAO.getLenghtQueueService(req.params.serviceID).then(
 		data => {
-			return res.status(200).json({ length: data });
+			return res.status(200).json(data);
 		},
 		err => {
 			return res.status(500).send(err);
@@ -80,10 +85,9 @@ app.get("/api/:serviceID/queueLength", async (req, res) => {
 	);
 });
 
-//GET /api/:serviceID/serviceTime
 //{ "expectedTime": {{expected service time of service with id}} }
-app.get("/api/:serviceID/serviceTime", async (req, res) => {
-	return await servicesDAO.getServiceTime(req.params.serviceID).then(
+app.get("/api/services/:serviceID/serviceTime", async (req, res) => {
+	return await servicesDAO.getServiceWaitingTime(req.params.serviceID).then(
 		data => {
 			return res.status(200).json(data);
 		},
