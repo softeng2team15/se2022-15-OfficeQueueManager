@@ -2,7 +2,11 @@
 const express=require('express');
 const app=express();
 const port=3001;
-const dao = require('./dao/dao');
+const {check, validationResult} = require('express-validator');
+const customer=require('./services/customer');
+const services=require('./dao/services');
+const tickets=require('./dao/tickets');
+const counter=require('./dao/counter');
 
 /* AUTHENTICATION CONTROL
 const passport = require('passport');
@@ -60,44 +64,43 @@ app.post('/api/login', passport.authenticate('local'), (req,res) => {
 app.listen(port, () => console.log(`Server started at http://localhost:${port}.`));
 
 app.get('/api/services', async (req, res) => {
-    dao.getServiceList()
+    services.getServiceList()
       .then(services => {res.json(services)})
-      .catch(() => res.status(500).end());
+      .catch(() => res.status(500).json({ error: `Database error fetching the services list.` }).end());
   
   });
   
-  app.post('/api/ticket/new', async (req, res) => {
-    
-      dao.newTicket(req.body.serviceID)
-      .then(ticketID => {res.json(ticketID); console.log("INDEX:" + res.json(ticketID))})
+  app.post('/api/ticket/new/:serviceID', async (req, res) => {
+    tickets.newTicket(req.params.serviceID)
+      .then(ticketID => res.json(ticketID))
       .catch(() => res.status(500).end());
   });
   
-  app.put('/api/ticket/counter', async (req, res) => {
+  app.put('/api/ticket/counter/:ticketID/:counterID', async (req, res) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
           return res.status(422).json({ errors: errors.array() });
       }
   
       try {
-          await dao.updateCounterToTicket(req.body.ticketID, req.body.counterID);
+          await tickets.updateCounterToTicket(req.params.ticketID, req.params.counterID);
           res.status(204).end();
       } catch (err) {
-          res.status(503).json({ error: `Database error during the insertion of study plan.` });
+          res.status(503).json({ error: `Database error during the insertion of ticket.` });
       }
   });
   
-  app.put('/api/ticket/done', async (req, res) => {
+  app.put('/api/ticket/done/:ticketID', async (req, res) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
           return res.status(422).json({ errors: errors.array() });
       }
   
       try {
-          await dao.setDoneToTicket(req.body.ticketID);
+          await tickets.setDoneToTicket(req.params.ticketID);
           res.status(204).end();
       } catch (err) {
-          res.status(503).json({ error: `Database error during the insertion of study plan.` });
+          res.status(503).json({ error: `Database error while updating ticket status to done.` });
       }
   
   });
