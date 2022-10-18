@@ -69,3 +69,6 @@ async function getServiceList(){
             .catch(() => reject({ error: "Cannot communicate with the server. "}));
     });
 }
+
+const API = {newTicket, updateCounterToTicket, setDoneToTicket, getServiceList}
+export default API;
