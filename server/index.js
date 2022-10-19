@@ -4,6 +4,8 @@ const customer=require('./services/customer');
 const officer=require('./services/officer');
 const counter=require('./dao/counter');
 const employees=require('./dao/employees');
+const tickets=require('./dao/tickets');
+const services=require('./dao/services');
 const app=express();
 const port=3001;
 // AUTHENTICATION CONTROL
@@ -92,21 +94,9 @@ app.get('/api/counter/:counterId/services',async(req,res)=>{
 });
 
 
-
-app.get("/api/customer/waitingTime/:ticketId", async (req, res) => {
-    try {
-        const ret = await customer.getWaitingTime(
-            parseInt(req.params.ticketId)
-        );
-        return res.status(200).json(ret);
-    } catch (error) {
-        return res.status(error.status).json(error.message);
-    }
-});
-
 //{ "length": {{queueLength of service with id}} }
 app.get("/api/tickets/:serviceID/queueLength", async (req, res) => {
-    return await ticketsDAO.getLenghtQueueService(req.params.serviceID).then(
+    return await tickets.getLenghtQueueService(req.params.serviceID).then(
         data => {
             return res.status(200).json(data);
         },
@@ -118,7 +108,7 @@ app.get("/api/tickets/:serviceID/queueLength", async (req, res) => {
 
 //{ "expectedTime": {{expected service time of service with id}} }
 app.get("/api/services/:serviceID/serviceTime", async (req, res) => {
-    return await servicesDAO.getServiceWaitingTime(req.params.serviceID).then(
+    return await services.getServiceWaitingTime(req.params.serviceID).then(
         data => {
             return res.status(200).json(data);
         },

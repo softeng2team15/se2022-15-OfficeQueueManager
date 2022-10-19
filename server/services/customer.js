@@ -9,7 +9,7 @@ getWaitingTime=async ticketId=>{
         const lenQueueAhead=await tickets.getAheadLengthService(ticketId,serviceId);
         const countersService=await counter.countersService(serviceId);
         let den=0;countersService.forEach(r=>den+=r.serviceFreq);
-        return serviceTime*((lenQueueAhead/den)+0.5);
+        return serviceTime*(((lenQueueAhead+1)/den)+0.5);
     } catch (error) {
         throw error;
     }
