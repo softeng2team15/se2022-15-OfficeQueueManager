@@ -1,5 +1,57 @@
+import ServiceClass from "./lib/serviceClass";
 const APIURL = new URL('http://localhost:3001/api/');
+const APIBASE='http://localhost:3001/api/';
 
+const login=async(username,password)=>{
+    const res=await fetch(APIBASE+'login',{
+        method:'POST',
+        headers:{
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({username:username,password:password}),
+        credentials:"include"
+    });
+    const emp=await res.json();
+    if(res.ok) return emp;
+    else throw emp;
+}
+
+const logout=async()=>{
+    const res=await fetch(APIBASE+'logout',{
+        method:"DELETE",
+        headers:{
+            "Content-type": "application/json"
+        },
+        credentials:"include"
+    });
+    if(res.ok) return;
+    else{
+        const ret=await res.json();
+        throw ret;
+    }
+}
+const getServicesCounter=async counterId=>{
+    const res=await fetch(APIBASE+'counter/'+counterId+'/services');
+    const services=await res.json();
+    if(res.ok)  return services.map(s=>new ServiceClass(s.id,s.name,s.expectedTime));
+    else throw res.status;
+}
+const getOfficerCounter=async ()=>{
+    const res=await fetch(APIBASE+'officer/counter',{
+        credentials:"include"
+    });
+    const counter=await res.json();
+    if(res.ok)  return counter;
+    else throw res.status;
+}
+const getNext=async ()=>{
+    const res=await fetch(APIBASE+'officer/serve',{
+        credentials:"include"
+    });
+    const ticket=await res.json();
+    if(res.ok)  return ticket;
+    else throw res.status;
+}
 async function newTicket(serviceID) {
     return new Promise((resolve, reject) => {
         const thisURL = "ticket/new/" + serviceID;
@@ -106,5 +158,5 @@ async function getRemainingTimeToServe(serviceId) {
     });
 }
 
-const API = { newTicket, updateCounterToTicket, setDoneToTicket, getServiceList, getServiceLength, getRemainingTimeToServe }
+const API = { newTicket, updateCounterToTicket, setDoneToTicket, getServiceList, getServiceLength, getRemainingTimeToServe ,getServicesCounter,getOfficerCounter,login,logout,getNext}
 export default API;

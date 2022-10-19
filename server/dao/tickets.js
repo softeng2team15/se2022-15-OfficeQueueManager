@@ -1,5 +1,18 @@
 const db=require('./dao');
-
+setTicketServed=async (ticketId,counterId)=>new Promise((resolve,reject)=>{
+    const sql="UPDATE TICKETS SET Status=?,CounterID=? WHERE TicketID=?";
+    db.run(sql,['DONE',counterId,ticketId],e=>{
+        if(e) reject({status:500,message:"Internal server error"});
+        resolve();
+    });
+});
+getFirstInLine=async serviceId=>new Promise((resolve,reject)=>{
+    const sql="SELECT MIN(TicketID) AS ticket FROM TICKETS WHERE ServiceID=? AND Status='PENDING'";
+    db.get(sql,[serviceId],(e,r)=>{
+        if(e) reject({status:500,message:"Internal server error"});
+        resolve(r.ticket);
+    });
+});
 newTicket = async (serviceID) => new Promise((resolve, reject) => {
 		const sql_in = 'INSERT INTO TICKETS (TicketID, CounterID, ServiceID, Status, Date) VALUES (NULL, NULL, ?, ?, ?)';
         const sql_out = 'SELECT MAX(TicketID) AS ticketID FROM TICKETS'
@@ -73,6 +86,6 @@ setDoneToTicket = async (ticketID) => new Promise((resolve, reject) => {
             }
         });
     });
-const tickets={newTicket, updateCounterToTicket, setDoneToTicket,getLenghtQueueService,getAheadLengthService,getServiceTicket};
+const tickets={newTicket, updateCounterToTicket, setDoneToTicket,getLenghtQueueService,getAheadLengthService,getServiceTicket,setTicketServed,getFirstInLine};
 
 module.exports=tickets;
