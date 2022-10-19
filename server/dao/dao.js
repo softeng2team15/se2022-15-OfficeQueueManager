@@ -21,10 +21,10 @@ if (fs.existsSync(__dirname + "/database.db")) restart = true;
 else restart = false;
 const dataSql = fs.readFileSync(__dirname + "/initQueries.sql").toString();
 const db = new sqlite.Database(__dirname + "/database.db", e => {
-	if (e) throw { status: 500, message: "Failed to create the database" };
+	if (e) throw { status: 500, message: {status:500,message:"Failed to create the database"} };
 	else {
 		if (!restart)
-			initQueries()
+			 initQueries()
 				.then()
 				.catch(e => {
 					throw e;
@@ -33,3 +33,13 @@ const db = new sqlite.Database(__dirname + "/database.db", e => {
 });
 
 module.exports = db;
+
+module.exports=db;
+
+
+
+
+
+
+
+//module.exports=db;
