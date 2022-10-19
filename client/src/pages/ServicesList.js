@@ -25,7 +25,7 @@ function ServicesList(props) {
         </Col>
       </Row>
       <Row>  
-        {displayedServices.map((service) => <ServiceButton service={service} ></ServiceButton>)}
+        {displayedServices.map((service) => <ServiceButton service={service} addNewTicket={props.addNewTicket}></ServiceButton>)}
       </Row>    
     </Container>
   );
@@ -36,7 +36,8 @@ function ServiceButton(props){
     <>
     <Col xs={4}>
         <OverlayTrigger trigger="click" rootClose placement="right" 
-        overlay={<Popover id="popover-basic">{<PopElement service={props.service}></PopElement>}</Popover>}>
+        overlay={<Popover id="popover-basic">
+          {<PopElement service={props.service} addNewTicket={props.addNewTicket}></PopElement>}</Popover>}>
             <Button className='mt-4' variant="warning" size="lg">{props.service.ServiceName}</Button>
         </OverlayTrigger>
     </Col>
@@ -49,7 +50,7 @@ function PopElement(props){
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    //function to call the API to add the new customer at the service queue
+    props.addNewTicket(props.service.ServiceID);
 
     navigate("/service");
   

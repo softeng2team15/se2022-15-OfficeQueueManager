@@ -22,12 +22,18 @@ function App() {
       .catch(err => setMessage(err))
   }, [])
 
+  function addNewTicket(serviceID) {
+    API.newTicket(serviceID)
+      .then()
+      .catch(err => setMessage(err))
+  }
+
 
   return (
     <>
     <Router>
       <Routes>
-        <Route path='/' element={<ServicesList servList={servList}/>} />
+        <Route path='/' element={<ServicesList servList={servList} addNewTicket={addNewTicket}/>} />
         <Route path='/service' element={<Service />} />
       </Routes>
     </Router>
