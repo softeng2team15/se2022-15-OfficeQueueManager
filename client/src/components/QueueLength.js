@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import API from '../API';
 
 import './QueueLength.css'
 
+let interval;
 function QueueLength() {
-  const baseUrl = "http://localhost:3001";
 
   var [initVal, setInitVal] = useState(undefined);
   var [remainingTime, setRemainingTime] = useState('∞');
@@ -13,24 +14,30 @@ function QueueLength() {
 
   const serviceId = 1;
   useEffect(() => {
-    fetch(baseUrl + `/api/tickets/${serviceId}/queueLength`).then(res => {
-      setInitVal(res.length);
+    API.getServiceLength(serviceId).then(res => {
+      setInitVal(res);
+      setCurrentVal(res);
     });
+    API.getRemainingTimeToServe(serviceId).then(res => {
+      setRemainingTime(res);
+
+    });
+
+    if (!interval) {
+      interval = setInterval(() => {
+
+        API.getServiceLength(serviceId).then(res => {
+          setCurrentVal(res);
+        });
+        API.getRemainingTimeToServe(serviceId).then(res => {
+          setRemainingTime(res);
+
+        });
+
+      }, 5000);
+    }
+
   }, [])
-
-
-  setTimeout(() => {
-
-    fetch(baseUrl + `/api/tickets/${serviceId}/queueLength`).then(res => {
-      setCurrentVal(res.length);
-    });
-
-    fetch(baseUrl + `/api/services/${serviceId}/serviceTime`).then(res => {
-      setRemainingTime(res.length);
-    });
-
-    setCurrentVal(--currentVal);
-  }, 5000);
 
   return (
 

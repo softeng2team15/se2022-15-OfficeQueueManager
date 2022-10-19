@@ -1,74 +1,110 @@
 const APIURL = new URL('http://localhost:3001/api/');
 
-async function newTicket(serviceID){
+async function newTicket(serviceID) {
     return new Promise((resolve, reject) => {
         const thisURL = "ticket/new/" + serviceID;
         fetch(new URL(thisURL, APIURL), {
-            method: 'POST'})
+            method: 'POST'
+        })
             .then((response) => {
                 if (response.ok) {
                     resolve();
                 } else {
                     response.json()
-                        .then((message) => {reject(message);})
-                        .catch(() => {reject({error: "Cannot parse server response. "})});
+                        .then((message) => { reject(message); })
+                        .catch(() => { reject({ error: "Cannot parse server response. " }) });
                 }
             })
-            .catch(() => reject({ error: "Cannot communicate with the server. "}));
+            .catch(() => reject({ error: "Cannot communicate with the server. " }));
     });
 }
 
-async function updateCounterToTicket(ticketID, counterID){
+async function updateCounterToTicket(ticketID, counterID) {
     return new Promise((resolve, reject) => {
-        const thisURL = "ticket/counter/"+ticketID+"/"+counterID;
+        const thisURL = "ticket/counter/" + ticketID + "/" + counterID;
         fetch(new URL(thisURL, APIURL), {
-            method: 'PUT'})
+            method: 'PUT'
+        })
             .then((response) => {
                 if (response.ok) {
                     resolve();
                 } else {
                     response.json()
-                        .then((message) => {reject(message);})
-                        .catch(() => {reject({error: "Cannot parse server response. "})});
+                        .then((message) => { reject(message); })
+                        .catch(() => { reject({ error: "Cannot parse server response. " }) });
                 }
             })
-            .catch(() => reject({ error: "Cannot communicate with the server. "}));
+            .catch(() => reject({ error: "Cannot communicate with the server. " }));
     });
 }
 
-async function setDoneToTicket(ticketID){
+async function setDoneToTicket(ticketID) {
     return new Promise((resolve, reject) => {
-        const thisURL = "ticket/done/" + ticketID; 
+        const thisURL = "ticket/done/" + ticketID;
         fetch(new URL(thisURL, APIURL), {
-            method: 'PUT'})
+            method: 'PUT'
+        })
             .then((response) => {
                 if (response.ok) {
                     resolve();
                 } else {
                     response.json()
-                        .then((message) => {reject(message);})
-                        .catch(() => {reject({error: "Cannot parse server response. "})});
+                        .then((message) => { reject(message); })
+                        .catch(() => { reject({ error: "Cannot parse server response. " }) });
                 }
             })
-            .catch(() => reject({ error: "Cannot communicate with the server. "}));
+            .catch(() => reject({ error: "Cannot communicate with the server. " }));
     });
 }
 
-async function getServiceList(){
+async function getServiceList() {
     return new Promise((resolve, reject) => {
         fetch(new URL("ticket/services", APIURL))
             .then((response) => {
                 if (response.ok) {
-                    resolve();
+                    resolve(response.json());
                 } else {
                     response.json()
-                        .then((message) => {reject(message);})
-                        .catch(() => {reject({error: "Cannot parse server response. "})});
+                        .then((message) => { reject(message); })
+                        .catch(() => { reject({ error: "Cannot parse server response. " }) });
                 }
             })
-            .catch(() => reject({ error: "Cannot communicate with the server. "}));
+            .catch(() => reject({ error: "Cannot communicate with the server. " }));
     });
 }
 
-const API = {newTicket, updateCounterToTicket, setDoneToTicket, getServiceList}
+
+async function getServiceLength(serviceId) {
+    return new Promise((resolve, reject) => {
+        fetch(new URL(`/api/tickets/${serviceId}/queueLength`, APIURL))
+            .then((response) => {
+                if (response.ok) {
+                    resolve(response.json());
+                } else {
+                    response.json()
+                        .then((message) => { reject(message); })
+                        .catch(() => { reject({ error: "Cannot parse server response. " }) });
+                }
+            })
+            .catch(() => reject({ error: "Cannot communicate with the server. " }));
+    });
+}
+
+async function getRemainingTimeToServe(serviceId) {
+    return new Promise((resolve, reject) => {
+        fetch(new URL(`/api/services/${serviceId}/serviceTime`, APIURL))
+            .then((response) => {
+                if (response.ok) {
+                    resolve(response.json());
+                } else {
+                    response.json()
+                        .then((message) => { reject(message); })
+                        .catch(() => { reject({ error: "Cannot parse server response. " }) });
+                }
+            })
+            .catch(() => reject({ error: "Cannot communicate with the server. " }));
+    });
+}
+
+const API = { newTicket, updateCounterToTicket, setDoneToTicket, getServiceList, getServiceLength, getRemainingTimeToServe }
 export default API;

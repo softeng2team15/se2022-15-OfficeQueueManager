@@ -2,7 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ServicesList } from './pages/ServicesList';
-import  QueueLength  from './pages/components/QueueLength'
+import QueueLength from './components/QueueLength'
 import { useState, useEffect } from 'react';
 import API from './API.js';
 
@@ -18,7 +18,7 @@ function App() {
 
   useEffect(() => {
     API.getServiceList()
-      .then( (servList) => setServList(servList) )
+      .then((servList) => setServList(servList))
       .catch(err => setMessage(err))
   }, [])
 
@@ -31,12 +31,12 @@ function App() {
 
   return (
     <>
-    <Router>
-      <Routes>
-        <Route path='/' element={<ServicesList />} />
-        <Route path='/service' element={<Service />} />
-      </Routes>
-    </Router>
+      <Router>
+        <Routes>
+          <Route path='/' element={<ServicesList servList={servList} addNewTicket={addNewTicket} />} />
+          <Route path='/service/:serviceId' element={<QueueLength />} />
+        </Routes>
+      </Router>
     </>
   );
 }
