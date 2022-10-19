@@ -9,7 +9,6 @@ const app = express();
 const port = 3001;
 
 const {check, validationResult} = require('express-validator');
-const customer=require('./services/customer');
 const services=require('./dao/services');
 const tickets=require('./dao/tickets');
 const counter=require('./dao/counter');
