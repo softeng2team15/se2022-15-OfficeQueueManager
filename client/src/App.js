@@ -3,7 +3,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ServicesList } from './ServicesList';
-import { Service } from './Service'
+import  QueueLength  from './components/QueueLength'
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
     <Router>
       <Routes>
         <Route path='/' element={<ServicesList />} />
-        <Route path='/service' element={<Service />} />
+        <Route path='/service' element={<QueueLength />} />
       </Routes>
     </Router>
     </>
