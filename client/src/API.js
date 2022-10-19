@@ -54,17 +54,21 @@ async function setDoneToTicket(ticketID){
     });
 }
 
-
-async function getServiceList() {
-  
-    const response = await fetch(new URL("services", APIURL));
-    const servicesJson = await response.json();
-    if (response.ok) {
-      return servicesJson.map((s) => ({ServiceID: s.ServiceID, ServiceName: s.ServiceName, TimeRequired: s.TimeRequired}));
-    } else {
-      throw servicesJson;  
-    }
-  }
+async function getServiceList(){
+    return new Promise((resolve, reject) => {
+        fetch(new URL("ticket/services", APIURL))
+            .then((response) => {
+                if (response.ok) {
+                    resolve();
+                } else {
+                    response.json()
+                        .then((message) => {reject(message);})
+                        .catch(() => {reject({error: "Cannot parse server response. "})});
+                }
+            })
+            .catch(() => reject({ error: "Cannot communicate with the server. "}));
+    });
+}
 
 const API = {newTicket, updateCounterToTicket, setDoneToTicket, getServiceList}
 export default API;
