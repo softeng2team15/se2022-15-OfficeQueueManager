@@ -1,0 +1,11 @@
+.counter-container {
+  position: absolute;
+  width: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: #eee;
+  padding: 3%;
+  border-radius: 10px;
+  text-align: center;
+}

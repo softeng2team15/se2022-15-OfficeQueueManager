@@ -2,7 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ServicesList } from './pages/ServicesList';
-import QueueLength from './components/QueueLength'
+import QueueLength from './pages/QueueLength'
 import { useState, useEffect } from 'react';
 import API from './API.js';
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ProgressBar from '../components/Progressbar';
 import API from '../API';
 
 import './QueueLength.css'
@@ -46,11 +47,7 @@ function QueueLength() {
       <div>{currentVal} <small>people are ahead of you</small></div>
       <h1>Waiting Time</h1>
       <div>~{remainingTime} <small>Minutes</small></div>
-      <div>
-        <div className="meter">
-          <span style={{ width: currentVal / initVal * 100 + '%' }}></span>
-        </div>
-      </div>
+      <ProgressBar percentage={currentVal / initVal * 100}></ProgressBar>
     </div>
   );
 }
