@@ -11,7 +11,7 @@ function ServicesList(props) {
     <Container>
       <Row>
         <Col>
-          <h1>List of service</h1>
+          <h1>List of services</h1>
         </Col>
       </Row>
       <Row>
