@@ -47,12 +47,12 @@ function ServiceButton(props) {
 function PopElement(props) {
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    props.addNewTicket(props.service.ServiceID);
+    const res=await props.addNewTicket(props.service.ServiceID);
 
-    navigate("/service/" + props.service.ServiceID);
+    navigate("/ticket/" + res);
 
   }
 

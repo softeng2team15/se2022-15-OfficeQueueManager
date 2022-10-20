@@ -95,15 +95,15 @@ app.get('/api/counter/:counterId/services',async(req,res)=>{
 
 
 //{ "length": {{queueLength of service with id}} }
-app.get("/api/tickets/:serviceID/queueLength", async (req, res) => {
-    return await tickets.getLenghtQueueService(req.params.serviceID).then(
-        data => {
-            return res.status(200).json(data);
-        },
-        err => {
-            return res.status(500).send(err);
-        }
-    );
+app.get("/api/tickets/:ticketId/queueLength", async (req, res) => {
+    try {
+        const tick=parseInt(req.params.ticketId);
+        const serv=await tickets.getServiceTicket(tick);
+        const ret=await tickets.getAheadLengthService(tick,serv);
+        return res.status(200).json(ret);
+    } catch (error) {
+        return res.status(error.status).json(error.message);
+    }
 });
 
 //{ "expectedTime": {{expected service time of service with id}} }

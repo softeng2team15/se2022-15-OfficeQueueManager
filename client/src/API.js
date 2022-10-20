@@ -60,7 +60,7 @@ async function newTicket(serviceID) {
         })
             .then((response) => {
                 if (response.ok) {
-                    resolve();
+                    resolve(response.json())
                 } else {
                     response.json()
                         .then((message) => { reject(message); })
@@ -126,12 +126,12 @@ async function getServiceList() {
 }
 
 
-async function getServiceLength(serviceId) {
+async function getServiceLength(ticketId) {
     return new Promise((resolve, reject) => {
-        fetch(new URL(`/api/tickets/${serviceId}/queueLength`, APIURL))
+        fetch(new URL(`/api/tickets/${ticketId}/queueLength`, APIURL))
             .then((response) => {
                 if (response.ok) {
-                    resolve(response.json());
+                    resolve(response.json())
                 } else {
                     response.json()
                         .then((message) => { reject(message); })
@@ -142,12 +142,12 @@ async function getServiceLength(serviceId) {
     });
 }
 
-async function getRemainingTimeToServe(serviceId) {
+async function getRemainingTimeToServe(ticketId) {
     return new Promise((resolve, reject) => {
-        fetch(new URL(`/api/services/${serviceId}/serviceTime`, APIURL))
+        fetch(new URL(`/api/customer/waitingTime/${ticketId}`, APIURL))
             .then((response) => {
                 if (response.ok) {
-                    resolve(response.json());
+                    response.json().then(r=>resolve(r));
                 } else {
                     response.json()
                         .then((message) => { reject(message); })

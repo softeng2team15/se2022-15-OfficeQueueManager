@@ -20,7 +20,6 @@ newTicket = async (serviceID) => new Promise((resolve, reject) => {
         db.serialize(() => {
                 db.run(sql_in, [serviceID, "PENDING", "TODAY"], (err) => {
                     if (err) {
-                        console.log(err)
                         reject(err);
                         return;
                     }
@@ -31,7 +30,6 @@ newTicket = async (serviceID) => new Promise((resolve, reject) => {
                         reject(err);
                         return;
                     }
-                    console.log(row.ticketID)
                     resolve(row.ticketID);
                 });
             }
@@ -42,7 +40,6 @@ updateCounterToTicket = async (ticketID, counterID) =>  new Promise((resolve, re
 		const sql = 'UPDATE TICKETS SET CounterID = ? , Status=? WHERE TicketID = ?';
 		db.run(sql, [counterID, "SERVING", ticketID], (err) => {
 			if (err) {
-                console.log(err);
 				reject(err);
 				return;
 			}

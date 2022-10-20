@@ -56,7 +56,7 @@ counterCanServe=async counterId=>new Promise((resolve,reject)=>{
     });
 });
 countersService=async serviceId=>new Promise((resolve,reject)=>{
-    const sql="SELECT CounterID, 1/COUNT(*) AS serviceFreq FROM SERVICES_PER_COUNTER WHERE ServiceID=? GROUP BY CounterID"
+    const sql="SELECT SC.CounterID,COUNT(*) AS serviceFreq FROM SERVICES_PER_COUNTER SC,SERVICES_PER_COUNTER SC2 WHERE SC.CounterID=SC2.CounterID AND SC2.ServiceID=? GROUP BY SC.CounterID"
     db.all(sql,[serviceId],(e,r)=>{
         if(e)   reject({status:500,message:"Internal server error"});
         resolve(r);

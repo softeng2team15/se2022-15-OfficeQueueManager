@@ -14,7 +14,7 @@ function App() {
   /*const vett = [{ServiceID: 1, ServiceName: "prova"}, {ServiceID: 2, ServiceName: "prova2"}, {ServiceID: 3, ServiceName: "prova3"},
   {ServiceID: 4, ServiceName: "prova4"}, {ServiceID: 4, ServiceName: "prova4"},
   {ServiceID: 1, ServiceName: "prova"}, {ServiceID: 2, ServiceName: "prova2"}, {ServiceID: 3, ServiceName: "prova3"}];*/
-
+  const [ticket,setTicket]=useState(-1);
   const [servList, setServList] = useState([]);
   const [message, setMessage] = useState('');
 
@@ -24,10 +24,15 @@ function App() {
       .catch(err => setMessage(err))
   }, [])
 
-  function addNewTicket(serviceID) {
-    API.newTicket(serviceID)
-      .then()
-      .catch(err => setMessage(err))
+  async function addNewTicket(serviceID) {
+    try {
+      const tick=await API.newTicket(serviceID);
+      setTicket(tick);
+      return tick;
+    } catch (error) {
+      setTicket(-1);
+      throw error;
+    }
   }
 
 
@@ -36,7 +41,7 @@ function App() {
       <Header logged={logged} setLogged={setLogged}/>
       <Routes>
         <Route path='/' element={<ServicesList servList={servList} addNewTicket={addNewTicket} />} />
-        <Route path='/service/:serviceId' element={<QueueLength />} />
+        <Route path='/ticket/:ticketId' element={<QueueLength />} />
         <Route path='/login' element={<Login setLogged={setLogged}/>}/>
         <Route path='/officer/:username' element={<Officer setLogged={setLogged}/>}/>
       </Routes>
