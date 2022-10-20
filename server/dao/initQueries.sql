@@ -26,6 +26,7 @@ VALUES  (0,'Mail',5),
         (2,'Digital Identity',13),
         (3,'Credit Card',7);
 INSERT INTO OFFICERSCOUNTERS(Username,StartHour,EndHour,Day,CounterID)
-VALUES  ('jon','09:00','17:00','Thursday',2);
+VALUES  ('jon','09:00','17:00','Thursday',2),
+        ('jon','09:00','17:00','Monday',2);
 INSERT INTO EMPLOYEES(Username,Type,Password,Salt)
 VALUES  ('jon','officer','b3d26f05c724ac8d69b7a36cc53fd88726f4e1bd047896f717c921fbf6ccd74a','e657ff533e95a4ad9baed9623f5e365f');
