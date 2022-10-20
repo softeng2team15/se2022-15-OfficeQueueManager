@@ -1,6 +1,6 @@
-import { Container, Row, Col, Alert, Button, OverlayTrigger, Popover, Form } from 'react-bootstrap';
+import { Container, Row, Col, Card, Alert, Button, OverlayTrigger, Popover, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-
+import './ServiceList.css';
 
 function ServicesList(props) {
 
@@ -11,11 +11,11 @@ function ServicesList(props) {
     <Container>
       <Row>
         <Col>
-          <h1>List of service</h1>
+          <h1>List of services</h1>
         </Col>
       </Row>
       <Row>
-        <Col xs={5}>
+        <Col>
           <Alert variant="primary">
             <Alert.Heading>Hey, nice to see you</Alert.Heading>
             <p>
@@ -25,22 +25,33 @@ function ServicesList(props) {
         </Col>
       </Row>
       <Row>
-        {displayedServices.map((service) => <ServiceButton key={service.ServiceID} service={service} addNewTicket={props.addNewTicket}></ServiceButton>)}
+        {displayedServices.map((service) => <ServiceCard key={service.ServiceID} service={service} addNewTicket={props.addNewTicket}/>)}
       </Row>
     </Container>
   );
 }
 
+function ServiceCard(props) {
+  return(<>
+    <Col xs={3}>
+      <Card>
+        <Card.Body>
+          <Card.Title>{props.service.ServiceName}</Card.Title>
+          <ServiceButton service={props.service} addNewTicket={props.addNewTicket}/>
+        </Card.Body>
+      </Card>
+    </Col>
+  </>);
+}
+
 function ServiceButton(props) {
   return (
     <>
-      <Col xs={4}>
-        <OverlayTrigger trigger="click" rootClose placement="right"
-          overlay={<Popover id="popover-basic">
-            {<PopElement service={props.service} addNewTicket={props.addNewTicket}></PopElement>}</Popover>}>
-          <Button className='mt-4' variant="warning" size="lg">{props.service.ServiceName}</Button>
-        </OverlayTrigger>
-      </Col>
+      <OverlayTrigger trigger="click" rootClose placement="right"
+        overlay={<Popover id="popover-basic">
+          {<PopElement service={props.service} addNewTicket={props.addNewTicket}></PopElement>}</Popover>}>
+        <Button className='mt-4 right' variant="warning" size="lg">Select</Button>
+      </OverlayTrigger>
     </>);
 }
 

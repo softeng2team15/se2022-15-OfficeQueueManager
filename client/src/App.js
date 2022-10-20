@@ -21,7 +21,8 @@ function App() {
   useEffect(() => {
     API.getServiceList()
       .then((servList) => setServList(servList))
-      .catch(err => setMessage(err))
+      .catch(err => setMessage(err));
+    console.log(servList)
   }, [])
 
   async function addNewTicket(serviceID) {
